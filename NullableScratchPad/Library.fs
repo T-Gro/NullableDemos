@@ -109,3 +109,31 @@ module GenericCode =
     let an2 = allowsNull (null:string|null)
     //let an3 = allowsNull 15
 
+module Nullables_201_Advanced = 
+    open FSharpSyntax
+    // Value types
+    let first__nullNeverPossible : int = Unchecked.defaultof<_>
+
+    let second__nullOnlyAtRuntime () =
+        let x : _|null = (1,2)
+        let y : _|null = {|x=15|}
+
+        let but : (int*int) = Unchecked.defaultof<_>
+
+        x,y
+
+    let third__nullableModifierPossibleAtCompileTime () =
+        let x : _|null = {RecordField.X = "hello"}}
+        let y : _|null = AB.A
+        let z : _|null = obj()
+        x,y,z
+
+    [<AllowNullLiteral>]
+    type CanHaveNull(s:string) = 
+        member _.S = s
+
+    let fourth__nullIsRegularValueAlready() =
+        let x : _|null = ()
+        let x : _|null = Some 15
+        let x : _|null = CanHaveNull("hello")
+        x
