@@ -14,6 +14,8 @@ module FSharpSyntax =
 
     type RecordField = {X:string | null}
     type TupleField = string * string | null
+
+    type NestedGenerics = { Z : List<List<string | null> | null> | null }
     //type DUField = N of string | null
 
     type DuField =  I of int | S of (string|null)
@@ -39,5 +41,71 @@ module NewWarnings =
 
 module NullHandling = 
     open FSharpSyntax
-    let processPerson
+    let matchingAndActivePatterns (p:RecordField|null) = 
+        printfn "%i" p.X.Length
+        printfn "%A" p
+
+        match p with
+        | null -> 0
+        | notNullAnyMore -> notNullAnyMore.X.Length
+        |> ignore
+
+        match p with
+        | NonNull {X = NonNull x} -> x.Length
+        | NonNull {X = Null} -> 0
+        | Null -> 0
+
+    module ArgValidation = 
+
+        let argValidate_shadowing (arg1:string|null) =
+            let arg1 = nullArgCheck (nameof arg1) arg1
+            arg1.Length
+
+        let argumentValidation (p:RecordField|null) = 
+            let p = nonNull p
+            let x = nonNull p.X
+            x.Length
+
+        let automaticValidationViaActivePattern (NonNullQuick p) = p.X
+
+    module ShutUp__Unchecked__DANGEROUS =
+        let shutUp (p:RecordField) = (p.X |> Unchecked.nonNull).Length
+        let (!) = Unchecked.nonNull
+        let shutUp2 (p:RecordField) = (!p.X).Length
+
+        let automaticShutUp (Unchecked.NonNullQuick p) = p.X
+
+module TypeInference =
+    open FSharpSyntax
+
+    let getList() =
+        let mutable x = null
+        x <- ["a";"b"]
+        x
+
+    let processNullableList l =
+        let l = nullArgCheck (nameof l) l
+        l |> List.map (fun x -> x + x)
+
+    let processNullString s =
+        match s with
+        | Null -> 0
+        | NonNull s -> String.length s
+
+module GenericCode = 
+    let funcMustnull<'a when 'a : null> (x:'a) = x
+    let mustNotNull x = 
+        // Automatically generalizes to 'not null' because of being 'TKey in a dictionairy
+        let d = System.Collections.Generic.Dictionary<_,string>()
+        d[x] <- "hello"
+        d
+
+    let d = mustNotNull "x"
+    let d2 = mustNotNull ("x" : string | null)
+    let d3 = mustNotNull 15
+
+    let allowsNull(x:_|null) = (x,x)
+    let an = allowsNull "x"
+    let an2 = allowsNull (null:string|null)
+    //let an3 = allowsNull 15
 
