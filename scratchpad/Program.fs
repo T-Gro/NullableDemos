@@ -34,11 +34,18 @@ module AllowNullLiteral =
 
 
 
+
+
+
 module UncheckedOps = 
     open NullNotPossibleAtFsharpTypes
 
     let x  = Unchecked.defaultof<TwoStrings>
     let manyX = Array.zeroCreate<Person> 50
+
+
+
+
 
 
 
@@ -52,6 +59,11 @@ module NonFSharpTypes =
             if isNull nonNull then
                 0
             else 2112
+
+
+
+
+
 
 
 module GenericCode =

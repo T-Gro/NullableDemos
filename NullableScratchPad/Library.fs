@@ -123,7 +123,7 @@ module Nullables_201_Advanced =
         x,y
 
     let third__nullableModifierPossibleAtCompileTime () =
-        let x : _|null = {RecordField.X = "hello"}}
+        let x : _|null = {RecordField.X = "hello"}
         let y : _|null = AB.A
         let z : _|null = obj()
         x,y,z
