@@ -8,6 +8,7 @@ module ConsumeBCL =
     let fCreate f = File.Create f
     let fExists f = File.Exists f
 
+
 module FSharpSyntax = 
     type AB = A | B
     type AbNull = AB | null
@@ -36,13 +37,11 @@ module TypeAliasesZoo =
 module NewWarnings =
     open FSharpSyntax
     let processAB (x:AB | null) = x.IsA
-
-    let createFile (s:string|null) = ConsumeBCL.fCreate s
+    let createFile (s:string|null) = File.Create s
 
 module NullHandling = 
     open FSharpSyntax
     let matchingAndActivePatterns (p:RecordField|null) = 
-        printfn "%i" p.X.Length
         printfn "%A" p
 
         match p with
@@ -66,9 +65,10 @@ module NullHandling =
             let x = nonNull p.X
             x.Length
 
-        let automaticValidationViaActivePattern (NonNullQuick p) = p.X
+        let automaticValidationViaActivePattern (NonNullQuick p) = 
+            p.X
 
-    module ShutUp__Unchecked__DANGEROUS =
+    module ShutUp__Unchecked__DANGEROUS =      
         let shutUp (p:RecordField) = (p.X |> Unchecked.nonNull).Length
         let (!) = Unchecked.nonNull
         let shutUp2 (p:RecordField) = (!p.X).Length
@@ -85,7 +85,7 @@ module TypeInference =
 
     let processNullableList l =
         let l = nullArgCheck (nameof l) l
-        l |> List.map (fun x -> x + x)
+        l |> List.map (fun x -> x + 1)
 
     let processNullString s =
         match s with
@@ -94,20 +94,22 @@ module TypeInference =
 
 module GenericCode = 
     let funcMustnull<'a when 'a : null> (x:'a) = x
-    let mustNotNull x = 
+    let mustBeNotNull x = 
         // Automatically generalizes to 'not null' because of being 'TKey in a dictionairy
         let d = System.Collections.Generic.Dictionary<_,string>()
         d[x] <- "hello"
         d
 
-    let d = mustNotNull "x"
-    let d2 = mustNotNull ("x" : string | null)
-    let d3 = mustNotNull 15
+    let d = mustBeNotNull "x"
+    let d2 = mustBeNotNull ("x" : string | null)
+    let d3 = mustBeNotNull 15
 
     let allowsNull(x:_|null) = (x,x)
     let an = allowsNull "x"
     let an2 = allowsNull (null:string|null)
     //let an3 = allowsNull 15
+
+
 
 module Nullables_201_Advanced = 
     open FSharpSyntax

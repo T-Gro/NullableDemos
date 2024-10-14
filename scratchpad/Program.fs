@@ -13,6 +13,12 @@ module NullNotPossibleAtFsharpTypes =
     let x : TwoStrings = null
     let x : {|X:int|} = null
 
+    // Idiomatic FSharp for 'possibly absent value'
+    let possiblyAbsentValue = 
+        [ Some {Name = "Petr"}; None]
+        |> List.map (Option.map _.Name)
+
+
 
 
 
@@ -59,6 +65,9 @@ module NonFSharpTypes =
             if isNull nonNull then
                 0
             else 2112
+
+    let handleCsharpString (s:string) = Option.ofObj s
+
 
 
 
