@@ -128,6 +128,10 @@ module Nullables_201_Advanced =
         let x : _|null = {RecordField.X = "hello"}
         let y : _|null = AB.A
         let z : _|null = obj()
+        let processfunc(x:(int->int)|null) =
+            match x with
+            | null -> 0
+            | f -> f 15
         x,y,z
 
     [<AllowNullLiteral>]
