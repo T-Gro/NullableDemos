@@ -34,13 +34,36 @@ module TypeAliasesZoo =
     let myFunction (x:string ``?``) = x
     let myFunction2 (x:string ``¯|_(ツ)_|¯``) = x
 
-module NewWarnings =
+module NullableWarnings =
     open FSharpSyntax
-    let processAB (x:AB | null) = x.IsA
-    let createFile (s:string|null) = File.Create s
+    open System.Collections.Generic
+    let instanceMethod (x:AB | null) = x.IsA
+    let methodArgument (s:string|null) = File.Create s
+    let methodArgumentWithLiteral() = File.Create null
+    let uselessNullConversion(s:string) = Option.ofObj s
+    let uselessNullCheck(s:string) = match s with null -> () | _ -> ()
+    let invalidGenericTypeParameter() = Dictionary<string|null,int>()
+
+    //let cannotAddnullToValueType() : int | null =  15
+    let systemNullableWorks() = Nullable<int>(15)
+
+    let showGenericHints( x: _|null) =
+        let y = x
+        match x with
+        | Null -> 0
+        | NonNull x -> hash x
+
+    type NullToString = A | B | C
+        with override this.ToString() = if this=A then null else "not A"
 
 module NullHandling = 
     open FSharpSyntax
+
+    let matchNullableString(s:string|null) =    
+        match s with
+        | null -> 0
+        | notNull -> notNull.Length
+
     let matchingAndActivePatterns (p:RecordField|null) = 
         printfn "%A" p
 
@@ -53,6 +76,13 @@ module NullHandling =
         | NonNull {X = NonNull x} -> x.Length
         | NonNull {X = Null} -> 0
         | Null -> 0
+
+    type ABNull = A | B of (string|null)
+
+    let handleString (s:string|null) =
+        match s with
+        | null -> 0
+        | NonNull s -> s.Length
 
     module ArgValidation = 
 
@@ -67,6 +97,24 @@ module NullHandling =
 
         let automaticValidationViaActivePattern (NonNullQuick p) = 
             p.X
+
+        let (|NullOrEmpty|NonEmpty|) s = 
+            match s with
+            | Null | NonNull "" -> NullOrEmpty
+            | NonNull s -> NonEmpty s
+
+        let getStringLengthSafe s = 
+            match s with
+            | NullOrEmpty -> 0
+            | NonEmpty s -> s.Length
+
+        let readAllLines (sr:System.IO.StreamReader) =
+            seq{
+                while not sr.EndOfStream do
+                    yield sr.ReadLine() |> Unchecked.nonNull}
+
+        let extractNonNullables (l:List<string|null>) = l |> List.choose Option.ofObj
+
 
     module ShutUp__Unchecked__DANGEROUS =      
         let shutUp (p:RecordField) = (p.X |> Unchecked.nonNull).Length
@@ -91,6 +139,7 @@ module TypeInference =
         match s with
         | Null -> 0
         | NonNull s -> String.length s
+
 
 module GenericCode = 
     let funcMustnull<'a when 'a : null> (x:'a) = x

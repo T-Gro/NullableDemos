@@ -7,6 +7,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PreNullnessDemo", "PreNulln
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NullableScratchPad", "..\NullableScratchPad\NullableScratchPad.fsproj", "{22698B9D-EBB1-4F52-A016-C0492B9A1D2C}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SmallLibWithDU", "..\SmallLibWithDU\SmallLibWithDU.fsproj", "{C8EBBF77-E137-4DC3-865E-1844483E6A89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpLib", "..\CSharpLib\CSharpLib.csproj", "{77DF3A3A-64E1-47B5-96FF-FE7CA6449DC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{22698B9D-EBB1-4F52-A016-C0492B9A1D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22698B9D-EBB1-4F52-A016-C0492B9A1D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22698B9D-EBB1-4F52-A016-C0492B9A1D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8EBBF77-E137-4DC3-865E-1844483E6A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8EBBF77-E137-4DC3-865E-1844483E6A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8EBBF77-E137-4DC3-865E-1844483E6A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8EBBF77-E137-4DC3-865E-1844483E6A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77DF3A3A-64E1-47B5-96FF-FE7CA6449DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77DF3A3A-64E1-47B5-96FF-FE7CA6449DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77DF3A3A-64E1-47B5-96FF-FE7CA6449DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77DF3A3A-64E1-47B5-96FF-FE7CA6449DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
